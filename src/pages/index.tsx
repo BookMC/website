@@ -59,15 +59,26 @@ function Main() {
         <main className={styles.main}>
             <div className={styles.mainContent}>
                 <div>
-                    <h4 className="subtitle">What is BookMC?</h4>
+                    <h4 className="subtitle">What is Book?</h4>
                     <p className="text">
-                        BookMC is a lightweight mod loader for Minecraft.
-                        (insert more text here later)
+                        Book is a lightweight mod loader for Minecraft. It aims
+                        to support most versions of Minecraft, from your
+                        favourite legacy versions, to the latest versions of the
+                        game. Book is the only mod loader that you need!
                     </p>
                 </div>
 
                 <div>
-                    <h4 className="subtitle">Install BookMC</h4>
+                    <h4 className="subtitle">Why should you choose Book?</h4>
+                    <p className="text">
+                        Book has been designed from the ground-up to be modular,
+                        fast, and lightweight. Providing you with the best
+                        user-experience possible.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 className="subtitle">Install Book</h4>
                     <Card>
                         <p className="small-text">Installing is easy!</p>
                         <p className="small-text mb-4">
