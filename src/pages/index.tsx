@@ -1,7 +1,9 @@
-import type { NextPage } from "next"
+import { NextPage } from "next"
+import { useEffect, useState } from "react"
+
+import React from "react"
 import Head from "next/head"
 import Image from "next/image"
-import React, { useEffect, useState } from "react"
 import useSWR from "swr"
 import Card from "../components/Card"
 import ExternalLink from "../components/ExternalLink"
@@ -44,14 +46,13 @@ function Main() {
     const [latestVersion, setLatestVersion] = useState<VersionInfo | null>(null)
 
     useEffect(() => {
-        if (data) {
-            const version = data.latest
+        if (!data) return
+        const version = data.latest
 
-            setLatestVersion({
-                version: version,
-                url: data[version].url
-            })
-        }
+        setLatestVersion({
+            version: version,
+            url: data[version].url
+        })
     }, [data])
 
     return (
@@ -87,7 +88,7 @@ function Main() {
     )
 }
 
-const Home: NextPage = () => {
+function Home() {
     return (
         <div className={styles.pageContainer}>
             <Head>
