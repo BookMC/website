@@ -8,11 +8,10 @@ import useSWR from "swr"
 import Card from "../components/Card"
 import ExternalLink from "../components/ExternalLink"
 import styles from "../styles/Home.module.css"
-
-interface VersionInfo {
-    version: string
-    url: string
-}
+import {
+    InstallerVersion,
+    InstallerVersions
+} from "../lib/InstallerVersions.interface"
 
 function Header() {
     return (
@@ -42,17 +41,17 @@ function Header() {
 }
 
 function Main() {
-    const { data, error } = useSWR("/api/v1/versions")
-    const [latestVersion, setLatestVersion] = useState<VersionInfo | null>(null)
+    const { data, error } = useSWR<InstallerVersions | null>(
+        "https://metadata.bookmc.org/v1/install/versions"
+    )
+
+    const [latestVersion, setLatestVersion] = useState<InstallerVersion | null>(
+        null
+    )
 
     useEffect(() => {
-        if (!data) return
-        const version = data.latest
-
-        setLatestVersion({
-            version: version,
-            url: data[version].url
-        })
+        if (error || !data || !data.success) return
+        setLatestVersion(data.latest)
     }, [data])
 
     return (
@@ -87,7 +86,7 @@ function Main() {
 
                         <ExternalLink
                             href={latestVersion && latestVersion.url}
-                            disabled={!latestVersion || error}
+                            disabled={!latestVersion}
                         >
                             Download Installer
                             {latestVersion && ` v${latestVersion.version}`}
