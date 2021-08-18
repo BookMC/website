@@ -1,4 +1,5 @@
 .pageContainer {
+    @apply flex flex-col h-screen;
 }
 
 .header {
@@ -6,5 +7,13 @@
 }
 
 .header .linksContainer {
-    @apply mt-4;
+    @apply mt-2;
+}
+
+.main {
+    @apply pl-32 p-10 bg-gray-50 h-full flex flex-grow;
+}
+
+.mainContent {
+    @apply flex flex-col gap-10;
 }

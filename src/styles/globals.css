@@ -24,5 +24,13 @@ a {
 }
 
 .subtitle {
-    @apply text-2xl font-medium text-gray-600;
+    @apply text-2xl font-medium text-gray-600 pb-2;
+}
+
+.text {
+    @apply text-lg font-normal text-gray-700;
+}
+
+.small-text {
+    @apply text-sm font-normal text-gray-600;
 }
