@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react"
-
 import React from "react"
 import Head from "next/head"
 import Image from "next/image"
@@ -7,14 +5,11 @@ import useSWR from "swr"
 import Card from "../components/Card"
 import ExternalLink from "../components/ExternalLink"
 import styles from "../styles/Home.module.css"
-import {
-    InstallerVersion,
-    InstallerVersions
-} from "../lib/InstallerVersions.interface"
+import { InstallerVersions } from "../lib/InstallerVersions.interface"
 import { GetStaticPropsContext } from "next"
 
 interface InitialProps {
-    versions: InstallerVersions
+    versions?: InstallerVersions | undefined
 }
 
 function Header() {
@@ -50,15 +45,6 @@ function Main(props: InitialProps) {
         { initialData: props.versions }
     )
 
-    const [latestVersion, setLatestVersion] = useState<InstallerVersion | null>(
-        null
-    )
-
-    useEffect(() => {
-        if (error || !data || !data.success) return
-        setLatestVersion(data.latest)
-    }, [data])
-
     return (
         <main className={styles.main}>
             <div className={styles.mainContent}>
@@ -89,13 +75,22 @@ function Main(props: InitialProps) {
                             Just download the installer below and run it.
                         </p>
 
-                        <ExternalLink
-                            href={latestVersion && latestVersion.url}
-                            disabled={!latestVersion}
-                        >
-                            Download Installer
-                            {latestVersion && ` v${latestVersion.version}`}
-                        </ExternalLink>
+                        {error ? (
+                            <p className="text-sm font-bold text-red-500">
+                                Failed to fetch installer versions, please try
+                                again later.
+                            </p>
+                        ) : (
+                            <ExternalLink
+                                href={data && data.latest.url}
+                                disabled={!data || !data.success}
+                            >
+                                Download Installer
+                                {data &&
+                                    data.success &&
+                                    ` v${data.latest.version}`}
+                            </ExternalLink>
+                        )}
                     </Card>
                 </div>
             </div>
@@ -117,17 +112,23 @@ export default function Home(props: InitialProps) {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-    const res = await fetch(`https://metadata.bookmc.org/v1/install/versions`)
-    const data = await res.json()
+    try {
+        const res = await fetch(
+            `https://metadata.bookmc.org/v1/install/versions`
+        )
+        const data = await res.json()
 
-    if (!res.ok || !data) {
-        return {
-            notFound: true
+        if (!res.ok || !data) {
+            return {
+                notFound: true
+            }
         }
-    }
 
-    return {
-        props: { versions: data },
-        revalidate: 300
+        return {
+            props: { versions: data },
+            revalidate: 300
+        }
+    } catch {
+        return { props: { versions: null } }
     }
 }
