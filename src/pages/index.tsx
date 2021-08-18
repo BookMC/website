@@ -118,11 +118,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         )
         const data = await res.json()
 
-        if (!res.ok || !data) {
-            return {
-                notFound: true
-            }
-        }
+        if (!res.ok || !data) return { props: { versions: null } }
 
         return {
             props: { versions: data },
