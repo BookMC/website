@@ -1,4 +1,3 @@
-import { NextPage } from "next"
 import { useEffect, useState } from "react"
 
 import React from "react"
@@ -12,6 +11,11 @@ import {
     InstallerVersion,
     InstallerVersions
 } from "../lib/InstallerVersions.interface"
+import { GetStaticPropsContext } from "next"
+
+interface InitialProps {
+    versions: InstallerVersions
+}
 
 function Header() {
     return (
@@ -40,9 +44,10 @@ function Header() {
     )
 }
 
-function Main() {
+function Main(props: InitialProps) {
     const { data, error } = useSWR<InstallerVersions | null>(
-        "https://metadata.bookmc.org/v1/install/versions"
+        "https://metadata.bookmc.org/v1/install/versions",
+        { initialData: props.versions }
     )
 
     const [latestVersion, setLatestVersion] = useState<InstallerVersion | null>(
@@ -98,7 +103,7 @@ function Main() {
     )
 }
 
-function Home() {
+export default function Home(props: InitialProps) {
     return (
         <div className={styles.pageContainer}>
             <Head>
@@ -106,9 +111,23 @@ function Home() {
             </Head>
 
             <Header />
-            <Main />
+            <Main versions={props.versions} />
         </div>
     )
 }
 
-export default Home
+export async function getStaticProps(context: GetStaticPropsContext) {
+    const res = await fetch(`https://metadata.bookmc.org/v1/install/versions`)
+    const data = await res.json()
+
+    if (!res.ok || !data) {
+        return {
+            notFound: true
+        }
+    }
+
+    return {
+        props: { versions: data },
+        revalidate: 300
+    }
+}
