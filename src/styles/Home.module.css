@@ -1,0 +1,10 @@
+.pageContainer {
+}
+
+.header {
+    @apply p-10 bg-gray-100 flex flex-row gap-5;
+}
+
+.header .linksContainer {
+    @apply mt-4;
+}

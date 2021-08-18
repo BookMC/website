@@ -18,3 +18,11 @@ a {
 * {
     box-sizing: border-box;
 }
+
+.title {
+    @apply text-3xl font-semibold text-gray-700;
+}
+
+.subtitle {
+    @apply text-2xl font-medium text-gray-600;
+}
