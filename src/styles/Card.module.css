@@ -1,5 +1,5 @@
 .card {
-    @apply rounded-lg bg-gray-50 w-96 border-gray-100 border-4;
+    @apply rounded-lg bg-gray-50 md:w-96 border-gray-100 border-4;
 }
 
 .cardContent {
