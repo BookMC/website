@@ -26,8 +26,7 @@ function Header() {
             <div>
                 <h1 className="title">BookMC</h1>
                 <h2 className="subtitle">
-                    The lightweight Legacy Minecraft ModLoader, built for fun,
-                    with love :)
+                    The lightweight Minecraft modloader, built for fun with love :)
                 </h2>
                 <div className={styles.linksContainer}>
                     <ExternalLink href="https://github.com/BookMC">
@@ -41,7 +40,7 @@ function Header() {
 
 function Main(props: InitialProps) {
     const { data, error } = useSWR<InstallerVersions | null>(
-        "https://metadata.bookmc.org/v1/install/versions",
+        "https://metadata.bookmc.org/v1/installer/versions",
         { initialData: props.versions }
     )
 
@@ -72,7 +71,8 @@ function Main(props: InitialProps) {
                     <Card>
                         <p className="small-text">Installing is easy!</p>
                         <p className="small-text mb-4">
-                            Just download the installer below and run it.
+                            Just download the installer below and run it. 
+                            (You must have Java installed)
                         </p>
 
                         {error ? (
@@ -114,7 +114,7 @@ export default function Home(props: InitialProps) {
 export async function getStaticProps(context: GetStaticPropsContext) {
     try {
         const res = await fetch(
-            `https://metadata.bookmc.org/v1/install/versions`
+            `https://metadata.bookmc.org/v1/installer/versions`
         )
         const data = await res.json()
 
